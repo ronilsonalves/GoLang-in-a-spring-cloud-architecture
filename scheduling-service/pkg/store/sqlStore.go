@@ -113,7 +113,7 @@ func auxGetAllByTable(tableName string, s *sqlStore) (interface{}, error) {
 
 	switch tableName {
 	case AP:
-		Query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_license,a.patient_identity,d.id,d.surname,d.name,d.license_number,p.id,p.surname,p.name,p.identity_number,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_license = d.license_number INNER JOIN patients p on a.patient_identity = p.identity_number ORDER BY a.date_and_time"
+		Query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_cro,a.patient_rg,d.id,d.last_name,d.name,d.cro,p.id,p.last_name,p.name,p.rg,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_cro = d.cro INNER JOIN patients p on a.patient_rg = p.rg ORDER BY a.date_and_time"
 		rows, err := s.db.Query(Query)
 		if err != nil {
 			return entities, err
@@ -168,7 +168,7 @@ func auxGetAllByTable(tableName string, s *sqlStore) (interface{}, error) {
 		}
 		return dentists, nil
 	case PE:
-		rows, err := s.db.Query("SELECT p.id, p.surname,p.name,p.identity_number, DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') FROM patients p")
+		rows, err := s.db.Query("SELECT p.id, p.last_name,p.name,p.rg, DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') FROM patients p")
 		if err != nil {
 			return entities, err
 		}
@@ -198,7 +198,7 @@ func auxGetByIDByTable(tableName string, entityID int, s *sqlStore) (interface{}
 
 	switch tableName {
 	case AP:
-		query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_license,a.patient_identity,d.id,d.surname,d.name,d.license_number,p.id,p.surname,p.name,p.identity_number,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_license = d.license_number INNER JOIN patients p on a.patient_identity = p.identity_number WHERE a.id = ? ORDER BY a.date_and_time"
+		query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_cro,a.patient_rg,d.id,d.last_name,d.name,d.cro,p.id,p.last_name,p.name,p.rg,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_cro = d.cro INNER JOIN patients p on a.patient_rg = p.rg WHERE a.id = ? ORDER BY a.date_and_time"
 		rows, err := s.db.Query(query, entityID)
 		if err != nil {
 			return entity, err
@@ -253,7 +253,7 @@ func auxGetByIDByTable(tableName string, entityID int, s *sqlStore) (interface{}
 		}
 		return nil, err
 	case PE:
-		rows, err := s.db.Query("SELECT p.id, p.surname,p.name,p.identity_number, DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') FROM patients p WHERE id = ?", entityID)
+		rows, err := s.db.Query("SELECT p.id, p.last_name,p.name,p.rg, DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') FROM patients p WHERE id = ?", entityID)
 		if err != nil {
 			return entity, err
 		}

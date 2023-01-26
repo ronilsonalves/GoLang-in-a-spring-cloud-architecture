@@ -41,7 +41,7 @@ func (sa *appointmentStore) GetAllAppointmentsByPatientIdentify(identifyNumber s
 	var appointment domain.AppointmentDTO
 	var appointments []domain.AppointmentDTO
 
-	query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_license,a.patient_identity,d.id,d.surname,d.name,d.license_number,p.id,p.surname,p.name,p.identity_number,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_license = d.license_number INNER JOIN patients p on a.patient_identity = p.identity_number WHERE a.patient_identity = ? ORDER BY a.date_and_time"
+	query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_cro,a.patient_rg,d.id,d.surname,d.name,d.cro,p.id,p.surname,p.name,p.rg,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_cro = d.cro INNER JOIN patients p on a.patient_rg = p.rg WHERE a.patient_rg = ? ORDER BY a.date_and_time"
 	rows, err := sa.db.Query(query, identifyNumber)
 	if err != nil {
 		log.Fatalln(err)
@@ -74,7 +74,7 @@ func (sa *appointmentStore) GetAllAppointmentsByDentistsLicense(licenseNumber st
 	var appointment domain.AppointmentDTO
 	var appointments []domain.AppointmentDTO
 
-	query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_license,a.patient_identity,d.id,d.surname,d.name,d.license_number,p.id,p.surname,p.name,p.identity_number,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_license = d.license_number INNER JOIN patients p on a.patient_identity = p.identity_number WHERE a.dentist_license = ? ORDER BY a.date_and_time"
+	query := "SELECT a.id, a.description, DATE_FORMAT(a.date_and_time,'%d/%m/%Y %H:%i') date_and_time,a.dentist_cro,a.patient_rg,d.id,d.surname,d.name,d.cro,p.id,p.surname,p.name,p.rg,DATE_FORMAT(p.created_at,'%d/%m/%Y %H:%i') created_at FROM appointments a INNER JOIN dentists d on a.dentist_cro = d.cro INNER JOIN patients p on a.patient_rg = p.rg WHERE a.dentist_cro = ? ORDER BY a.date_and_time"
 	rows, err := sa.db.Query(query, licenseNumber)
 	if err != nil {
 		log.Fatalln(err)
