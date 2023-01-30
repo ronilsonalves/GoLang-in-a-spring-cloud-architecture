@@ -1,0 +1,781 @@
+definitions:
+  domain.Appointment:
+    properties:
+      dateAndTime:
+        type: string
+      dentistCRO:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      patientRG:
+        type: string
+    required:
+    - dateAndTime
+    - dentistCRO
+    - description
+    - patientRG
+    type: object
+  domain.Dentist:
+    properties:
+      cro:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      name:
+        type: string
+    required:
+    - cro
+    - lastName
+    - name
+    type: object
+  domain.Patient:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+      name:
+        type: string
+      rg:
+        type: string
+    required:
+    - createdAt
+    - lastName
+    - name
+    - rg
+    type: object
+  web.errorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+      status_code:
+        type: integer
+      time_stamp:
+        type: string
+    type: object
+  web.response:
+    properties:
+      data: {}
+    type: object
+info:
+  contact:
+    name: Ronilson Alves
+    url: https://github.com/ronilsonalves
+  description: This API handle appointments, dentists and patients for dental clinic
+    system.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/license/LICENSE-2.0.html
+  termsOfService: https://www.linkedin.com/in/ronilsonalves
+  title: Dental Clinic API
+  version: "1.0"
+paths:
+  /appointments:
+    get:
+      consumes:
+      - application/json
+      description: get all appointments from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Appointment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: List all appointments
+      tags:
+      - Appointments
+    post:
+      consumes:
+      - application/json
+      description: Create a new appointment by request body
+      parameters:
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Appointment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Appointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Create a new appointment
+      tags:
+      - Appointments
+  /appointments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an appointment by ID
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Delete an appointment by ID
+      tags:
+      - Appointments
+    get:
+      consumes:
+      - application/json
+      description: get an appointment by a provided ID.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Appointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Get an appointment by an ID
+      tags:
+      - Appointments
+    patch:
+      consumes:
+      - application/json
+      description: Update fields from an appointment by ID and fields in request body
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Appointment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Appointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update fields from an appointment by ID
+      tags:
+      - Appointments
+    put:
+      consumes:
+      - application/json
+      description: Update a entire appointment by ID and request body
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Appointment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Appointment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update a entire appointment by ID
+      tags:
+      - Appointments
+  /appointments/dentist/{license_number}:
+    get:
+      consumes:
+      - application/json
+      description: Get all appointments by dentist license doc
+      parameters:
+      - description: Dentist License Number
+        in: path
+        name: license_number
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Appointment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Get all appointments by dentist license doc
+      tags:
+      - Appointments
+  /appointments/patient/{identity_number}:
+    get:
+      consumes:
+      - application/json
+      description: get all appointments by patient identity doc
+      parameters:
+      - description: Patient Doc Number
+        in: path
+        name: identity_number
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Appointment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Get all appointments by patient identity doc
+      tags:
+      - Appointments
+  /dentists:
+    get:
+      consumes:
+      - application/json
+      description: get all dentists from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Dentist'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: List all dentists
+      tags:
+      - Dentists
+    post:
+      consumes:
+      - application/json
+      description: Create a new dentist by request body.
+      parameters:
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Dentist'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Dentist'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Create a new dentist
+      tags:
+      - Dentists
+  /dentists/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by ID
+      parameters:
+      - description: Dentist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Delete a product by ID
+      tags:
+      - Dentists
+    get:
+      consumes:
+      - application/json
+      description: get a dentist by a provided ID.
+      parameters:
+      - description: Dentist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Dentist'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Get a dentist by an ID
+      tags:
+      - Dentists
+    patch:
+      consumes:
+      - application/json
+      description: Update fields from a dentist
+      parameters:
+      - description: Dentist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Dentist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Dentist'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update fields from a dentist
+      tags:
+      - Dentists
+    put:
+      consumes:
+      - application/json
+      description: Update an entire dentist by ID.
+      parameters:
+      - description: Dentist ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Dentist'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Dentist'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update an entire dentist by ID
+      tags:
+      - Dentists
+  /patients:
+    get:
+      consumes:
+      - application/json
+      description: get all patients from db.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Patient'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: List all patients
+      tags:
+      - Patients
+    post:
+      consumes:
+      - application/json
+      description: Create a new patient by request body.
+      parameters:
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Create a new patient
+      tags:
+      - Patients
+    put:
+      consumes:
+      - application/json
+      description: Update an entire patient by ID.
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update an entire patient by ID
+      tags:
+      - Patients
+  /patients/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a patient by ID
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Delete a patient by ID
+      tags:
+      - Patients
+    get:
+      consumes:
+      - application/json
+      description: get a patient by a provided ID.
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Get a patient by an ID
+      tags:
+      - Patients
+    patch:
+      consumes:
+      - application/json
+      description: Update fields from a patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Patient'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      security:
+      - SECRET_TOKEN: []
+      summary: Update fields from a patient
+      tags:
+      - Patients
+securityDefinitions:
+  SECRET_TOKEN:
+    in: header
+    name: SECRET_TOKEN
+    type: apiKey
+swagger: "2.0"
