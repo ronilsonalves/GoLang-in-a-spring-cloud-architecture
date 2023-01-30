@@ -1,0 +1,84 @@
+#Rename this file for application.yaml/application.yml or use Spring Profiles to manage Spring profiles application.
+auth:
+  keycloak:
+    realm: GoLangInSpringCloud #The name of your KeyCloak Realm
+    serverUrl: http://localhost:8090/
+    clientId: backend-services
+    clientSecret: PSTu0Gh0r9A4urJMvndbnt3z50IFBtEY
+
+spring:
+  application:
+    name: invoice-service
+  datasource:
+    url: jdbc:mysql://yourdatabaseURL:3306/yourDatabaseName?createDatabaseIfNotExist=true&serverTimezone=UTC-3&useSSl=false
+    username: yourMYSQLUser
+    password: yourPassword
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    generate-ddl: true
+    show-sql: true
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak-registration:
+            provider: keycloak-provider
+            client-id: backend-services
+            authorization-grant-type: client_credentials
+            client-secret: PSTu0Gh0r9A4urJMvndbnt3z50IFBtEY
+        provider:
+          keycloak-provider:
+            token-uri: http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/token
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/GoLangInSpringCloud
+
+server:
+  port: 8081
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+queue:
+  appointment-service:
+    name: appointment-service
+
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.0.0
+    description: Invoicing service
+  svc:
+    port: ${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure.include: beans, env, health, info, metrics, mappings
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.http: DEBUG
+    org.springdoc: WARN
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: api-gateway
+      use-pkce-with-authorization-code-grant: true
+  packages-to-scan:
+    - com.ronilsonalves.invoiceservice.api.controller
+    - com.ronilsonalves.invoiceservice.exceptionhandler
