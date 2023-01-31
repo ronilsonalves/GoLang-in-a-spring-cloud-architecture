@@ -127,6 +127,15 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     /**
+     * Update an existing invoice with data from RabbitMQ queue
+     * @param invoice from database
+     * @param appointment with data provided from RabbitMQ queue
+     */
+    public void update(Invoice invoice, Appointment appointment) {
+        repository.save(buildInvoiceToSave(invoice,appointment));
+    }
+
+    /**
      * @param invoiceId used to verify if exists an invoice registered at database
      * @throws ResourceNotFoundException if invoiceID provided there no exist at database
      */

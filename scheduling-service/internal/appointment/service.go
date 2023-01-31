@@ -1,8 +1,14 @@
 package appointment
 
 import (
+	"encoding/json"
 	"errors"
+	rabbitmq "github.com/hadihammurabi/go-rabbitmq"
 	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/internal/domain"
+	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/pkg/amqp"
+	amqpi "github.com/streadway/amqp"
+	"log"
+	"os"
 )
 
 type Service interface {
@@ -78,6 +84,7 @@ func (s *service) Create(a domain.Appointment) (domain.AppointmentDTO, error) {
 	}
 	apSaved, ok := aSavedInterface.(domain.AppointmentDTO)
 	if ok {
+		sendMsg(apSaved)
 		return apSaved, nil
 	}
 
@@ -113,9 +120,25 @@ func (s *service) Update(id int, a domain.Appointment) (domain.AppointmentDTO, e
 		return domain.AppointmentDTO{}, errors.New("failed to update appointment")
 	}
 
+	sendMsg(response)
 	return response, nil
 }
 
 func (s *service) Delete(id int) error {
 	return s.r.Delete(id)
+}
+
+// sendMsg - send a msg to RabbitMQ queue when an appointment is made or updated
+func sendMsg(a domain.AppointmentDTO) {
+	mq, err := amqp.ConnectRabbitMQ(os.Getenv("RABBIT_MQ_URL_CONN"), "appointment-service")
+	log.Println(err)
+	body, _ := json.Marshal(a)
+	err = mq.Publish(&rabbitmq.MQConfigPublish{
+		RoutingKey: mq.Queue().Name,
+		Message: amqpi.Publishing{
+			ContentType: "application/json",
+			Body:        body,
+		},
+	})
+	defer mq.Close()
 }
