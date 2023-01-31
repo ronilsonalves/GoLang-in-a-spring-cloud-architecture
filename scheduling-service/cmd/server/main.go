@@ -10,11 +10,13 @@ import (
 	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/internal/dentist"
 	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/internal/patient"
 	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/pkg/middleware"
+	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/pkg/sd"
 	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/pkg/store"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"os"
+	"os/signal"
 	"time"
 	_ "time/tzdata"
 )
@@ -43,6 +45,12 @@ func main() {
 	if err != nil {
 		log.Fatalln("Error loading .env file", err.Error())
 	}
+
+	eurekaRegister := sd.BuildFargoInstance()
+	eurekaRegister.Register()
+
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt)
 
 	// DB INIT
 	sqlStore := store.NewSQLStore()
@@ -102,6 +110,16 @@ func main() {
 			patients.DELETE(":id", patientHandler.Delete())
 		}
 	}
+
+	go func() {
+		select {
+		case signal := <-c:
+			_ = signal
+			time.Sleep(4 * time.Second)
+			eurekaRegister.Deregister()
+			os.Exit(1)
+		}
+	}()
 
 	r.Run(fmt.Sprintf("%s", os.Getenv("HOST")) + fmt.Sprintf(":%s", os.Getenv("PORT")))
 }

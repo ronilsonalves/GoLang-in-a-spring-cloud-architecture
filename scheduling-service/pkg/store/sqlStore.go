@@ -295,7 +295,7 @@ func auxSave(tableName string, s *sqlStore, entity interface{}) (interface{}, er
 			}
 			//
 			log.Println(apDateAndTimeParsed.String())
-			result, err := s.db.Exec("INSERT INTO appointments(DESCRIPTION, DATE_AND_TIME, dentist_license, patient_identity) VALUES(?,?,?,?)",
+			result, err := s.db.Exec("INSERT INTO appointments(DESCRIPTION, DATE_AND_TIME, dentist_cro, patient_rg) VALUES(?,?,?,?)",
 				appointment.Description,
 				apDateAndTimeParsed,
 				appointment.DentistCRO,
@@ -329,7 +329,7 @@ func auxSave(tableName string, s *sqlStore, entity interface{}) (interface{}, er
 		var dentist domain.Dentist
 		dentist, ok := entity.(domain.Dentist)
 		if ok {
-			result, err := s.db.Exec("INSERT INTO dentists(surname, name, license_number) VALUES (?,?,?)",
+			result, err := s.db.Exec("INSERT INTO dentists(lastName, name, cro) VALUES (?,?,?)",
 				dentist.LastName,
 				dentist.Name,
 				dentist.CRO)
@@ -354,7 +354,7 @@ func auxSave(tableName string, s *sqlStore, entity interface{}) (interface{}, er
 			if err != nil {
 				return nil, errors.New("failed to convert patient created_at field")
 			}
-			result, err := s.db.Exec("INSERT INTO patients(surname, name, identity_number, created_at) VALUES (?,?,?,?)",
+			result, err := s.db.Exec("INSERT INTO patients(lastName, name, rg, created_at) VALUES (?,?,?,?)",
 				patient.LastName,
 				patient.Name,
 				patient.RG,
@@ -389,7 +389,7 @@ func auxUpdate(tableName string, s *sqlStore, entity interface{}, entityId int) 
 				log.Println(err.Error(), "\nDate parsed: ", apDateAndTimeParsed)
 				return nil, errors.New("failed to convert datetime")
 			}
-			_, err = s.db.Exec("UPDATE appointments SET description = ?, date_and_time = ?, dentist_license = ?, patient_identity = ? WHERE id = ?",
+			_, err = s.db.Exec("UPDATE appointments SET description = ?, date_and_time = ?, dentist_cro = ?, patient_rg = ? WHERE id = ?",
 				appointment.Description,
 				apDateAndTimeParsed,
 				appointment.DentistCRO,
@@ -404,7 +404,7 @@ func auxUpdate(tableName string, s *sqlStore, entity interface{}, entityId int) 
 		var dentist domain.Dentist
 		dentist, ok := entity.(domain.Dentist)
 		if ok {
-			_, err := s.db.Exec("UPDATE dentists SET surname = ?, name = ?, license_number = ? WHERE id = ?",
+			_, err := s.db.Exec("UPDATE dentists SET lastName = ?, name = ?, cro = ? WHERE id = ?",
 				dentist.LastName,
 				dentist.Name,
 				dentist.CRO,
@@ -423,7 +423,7 @@ func auxUpdate(tableName string, s *sqlStore, entity interface{}, entityId int) 
 				return nil, errors.New("failed to convert patient created_at field: " + patient.CreatedAt)
 			}
 
-			_, err = s.db.Exec("UPDATE patients SET surname = ?, name = ?, identity_number = ?, created_at = ? WHERE id = ?",
+			_, err = s.db.Exec("UPDATE patients SET lastName = ?, name = ?, rg = ?, created_at = ? WHERE id = ?",
 				patient.LastName,
 				patient.Name,
 				patient.RG,
