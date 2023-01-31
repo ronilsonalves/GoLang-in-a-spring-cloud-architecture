@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: keycloak_db
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "S373Y91YQuf"
+    ports:
+      - "5439:5439"
+    networks:
+      - rede_docker
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  keycloak:
+    depends_on:
+      - postgres
+    container_name: keycloak_server
+    image: quay.io/keycloak/keycloak:20.0.2-1
+    ports:
+      - '8090:8080'
+    command: "start-dev"
+    environment:
+      KEYCLOAK_ADMIN: ronilsonalves
+      KEYCLOAK_ADMIN_PASSWORD: 'S373Y91YQuf'
+      KC_DB: postgres
+      KC_DB_PASSWORD: 'S373Y91YQuf'
+      KC_DB_USERNAME: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+    networks:
+      - rede_docker
+  
+  rabbitmq-service:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rede_docker
+
+networks:
+  rede_docker:
+    driver: bridge
+volumes:
+  db:
