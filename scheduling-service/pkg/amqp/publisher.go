@@ -1,9 +1,13 @@
 package amqp
 
 import (
+	"encoding/json"
 	gorabbitmq "github.com/hadihammurabi/go-rabbitmq"
 	"github.com/hadihammurabi/go-rabbitmq/exchange"
+	"github.com/ronilsonalves/GoLang-in-a-spring-cloud-architecture/scheduling-service/internal/domain"
+	amqpi "github.com/streadway/amqp"
 	"log"
+	"os"
 )
 
 func failOnError(err error, msg string) {
@@ -34,4 +38,19 @@ func ConnectRabbitMQ(urlConn, name string) (gorabbitmq.MQ, error) {
 	failOnError(err, "Failed to bind queue")
 
 	return *mq, nil
+}
+
+// PublishMessage - send a msg to RabbitMQ queue when an appointment is made or updated
+func PublishMessage(a domain.AppointmentDTO) {
+	mq, err := ConnectRabbitMQ(os.Getenv("RABBIT_MQ_URL_CONN"), "appointment-service")
+	log.Println(err)
+	body, _ := json.Marshal(a)
+	err = mq.Publish(&gorabbitmq.MQConfigPublish{
+		RoutingKey: mq.Queue().Name,
+		Message: amqpi.Publishing{
+			ContentType: "application/json",
+			Body:        body,
+		},
+	})
+	defer mq.Close()
 }
