@@ -46,7 +46,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         Appointment appointment = appointmentFeignRepository.getAppointmentByID(invoice.getAppointmentId());
         if (appointment != null) {
             return repository.save(buildInvoiceToSave(invoiceToSave,appointment));
-        } else throw new ResourceNotFoundException("Appointment's ID provided was not found. " +
+        } else throw new ResourceNotFoundException("Appointment's ID "+invoice.getAppointmentId()+" provided was not " +
+                "found. " +
                 "Please check the ID provided");
     }
 

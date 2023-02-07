@@ -9,7 +9,6 @@ import com.ronilsonalves.invoiceservice.exceptionhandler.UnauthorizedException;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperties;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -17,10 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,9 +41,8 @@ public class InvoiceController {
                             )
                     })
     })
-    @GetMapping
     @SecurityRequirement(name = "oauth_sec")
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping
     public ResponseEntity<?> getAllInvoices() throws UnauthorizedException{
         return ResponseEntity.ok().body(service.listAll());
     }
@@ -63,7 +59,6 @@ public class InvoiceController {
                     })
     })
     @SecurityRequirement(name = "oauth_sec")
-    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Invoice> save(@RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException, UnauthorizedException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(invoiceRequestBody));
@@ -80,6 +75,7 @@ public class InvoiceController {
                             )
                     })
     })
+    @SecurityRequirement(name = "oauth_sec")
     @PutMapping("/{invoiceID}")
     public ResponseEntity<Invoice> update(@PathVariable String invoiceID,
                                           @RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException, UnauthorizedException {
@@ -91,25 +87,40 @@ public class InvoiceController {
                     responseCode = "200",
                     description = "Return an invoice by Id",
                     content = {
-                            @Content(mediaType = "application/json")
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Invoice.class)
+                            )
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Throws a bad request exception. Caused by an invalid UUID provided at request",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json"
+                            )
                     }),
             @ApiResponse(
                     responseCode = "404",
                     description = "Throws a NOT FOUND exception. An invoice with provided ID was not found",
                     content = {
                             @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = Invoice.class)
+                                    mediaType = "application/json"
                             )
-                    }
-            )
+                    })
     })
+    @SecurityRequirement(name = "oauth_sec")
     @GetMapping("/{invoiceID}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable String invoiceID) throws InvalidUUIDException,
             ResourceNotFoundException,
             UnauthorizedException {
-        return ResponseEntity.ok().body(service.getInvoiceByID(UUID.fromString(invoiceID)));
+        try {
+            return ResponseEntity.ok().body(service.getInvoiceByID(UUID.fromString(invoiceID)));
+        } catch (IllegalArgumentException e) {
+            throw new InvalidUUIDException("The UUID provided is not in a valid format, please check the UUID and try" +
+                    " again.");
+        }
+
     }
 
     @ApiResponses(value = {
@@ -138,8 +149,8 @@ public class InvoiceController {
                     }
             )
     })
+    @SecurityRequirement(name = "oauth_sec")
     @GetMapping("/patient/{patientRG}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Invoice>> getInvoicesByPatientRG(@PathVariable String patientRG) throws ResourceNotFoundException, UnauthorizedException {
         return ResponseEntity.ok().body(service.getInvoicesByPatientRG(patientRG));
     }
@@ -163,8 +174,8 @@ public class InvoiceController {
                     }
             )
     })
+    @SecurityRequirement(name = "oauth_sec")
     @GetMapping("/dentist/{dentistCRO}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Invoice>> getInvoicesByDentistCRO(@PathVariable String dentistCRO) throws ResourceNotFoundException, UnauthorizedException {
         return ResponseEntity.ok().body(service.getInvoicesByDentistCRO(dentistCRO));
     }
@@ -188,8 +199,8 @@ public class InvoiceController {
                     }
             )
     })
+    @SecurityRequirement(name = "oauth_sec")
     @DeleteMapping("/{invoiceID}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> deleteInvoiceByID(@PathVariable String invoiceID) throws ResourceNotFoundException,
             UnauthorizedException {
         service.delete(UUID.fromString(invoiceID));
