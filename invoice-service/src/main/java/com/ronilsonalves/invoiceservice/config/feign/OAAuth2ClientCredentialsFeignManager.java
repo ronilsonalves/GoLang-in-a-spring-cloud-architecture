@@ -67,8 +67,7 @@ public class OAAuth2ClientCredentialsFeignManager {
     public String getAccessToken() {
         try {
             OAuth2AuthorizeRequest oAuth2AuthorizeRequest = OAuth2AuthorizeRequest
-                    .withClientRegistrationId(clientRegistration.getRegistrationId()) // a implementação anterior em
-                    // aula utilizou clientRegistration.getClientId(), alterei para o atual e rodou.
+                    .withClientRegistrationId(clientRegistration.getRegistrationId())
                     .principal(principal)
                     .build();
 
@@ -77,7 +76,7 @@ public class OAAuth2ClientCredentialsFeignManager {
             log.info("Status do ClientRegistration: "+ clientRegistration);
 
             if (client == null) {
-                throw new IllegalStateException(String.format("Client Crendentials flow para registro %s falhou! ",
+                throw new IllegalStateException(String.format("Client Credentials flow para registro %s falhou! ",
                         clientRegistration.getClientId()));
             }
             return client.getAccessToken().getTokenValue();
