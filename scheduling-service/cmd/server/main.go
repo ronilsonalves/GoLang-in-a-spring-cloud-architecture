@@ -36,16 +36,18 @@ func init() {
 // @license.name Apache 2.0
 // @license.url https://www.apache.org/license/LICENSE-2.0.html
 
-// @securityDefinitions.apikey SECRET_TOKEN
+// @securityDefinitions.oauth2.accessCode OAuth2Application
 // @in header
-// @name SECRET_TOKEN
+// @tokenurl http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/token
+// @authorizationurl http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/auth
+// @scope.openid
+// @name OAuth2Application
 func main() {
 
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalln("Error loading .env file", err.Error())
 	}
-
 	eurekaRegister := sd.BuildFargoInstance()
 	eurekaRegister.Register()
 
@@ -76,7 +78,7 @@ func main() {
 	r.GET("/swagger/*any",
 		ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Use(middleware.Authentication())
+	r.Use(middleware.IsAuthorizedJWT())
 
 	api := r.Group("/api/v1")
 	{

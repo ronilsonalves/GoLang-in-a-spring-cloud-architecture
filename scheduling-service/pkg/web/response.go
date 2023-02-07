@@ -17,7 +17,7 @@ type response struct {
 }
 
 func BadResponse(ctx *gin.Context, statusCode int, status, message string) {
-	ctx.JSON(statusCode, errorResponse{
+	ctx.AbortWithStatusJSON(statusCode, errorResponse{
 		StatusCode: statusCode,
 		Status:     status,
 		Message:    message,
