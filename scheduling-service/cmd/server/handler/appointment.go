@@ -32,12 +32,12 @@ func NewAppointmentHandler(s appointment.Service) *appointmentHandler {
 // @Tags Appointments
 // @Accept json
 // @Produce json
-// @Success 200 {object} []domain.Appointment
+// @Success 200 {object} []domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		response, err := h.s.GetAll()
@@ -63,12 +63,12 @@ func (h *appointmentHandler) GetAll() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param id path int true "Appointment ID"
-// @Success 200 {object} domain.Appointment
+// @Success 200 {object} domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments/{id} [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")
@@ -96,12 +96,12 @@ func (h *appointmentHandler) GetByID() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param identity_number path int true "Patient Doc Number"
-// @Success 200 {object} []domain.Appointment
+// @Success 200 {object} []domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments/patient/{identity_number} [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) GetAllByIdentityNumber() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("identity_number")
@@ -124,12 +124,12 @@ func (h *appointmentHandler) GetAllByIdentityNumber() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param license_number path int true "Dentist License Number"
-// @Success 200 {object} []domain.Appointment
+// @Success 200 {object} []domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments/dentist/{license_number} [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) GetAllByLicenseNumber() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("license_number")
@@ -152,11 +152,11 @@ func (h *appointmentHandler) GetAllByLicenseNumber() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param body body domain.Appointment true "Body"
-// @Success 201 {object} domain.Appointment
+// @Success 201 {object} domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Router /appointments [post]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var appointment domain.Appointment
@@ -191,13 +191,13 @@ func (h *appointmentHandler) Post() gin.HandlerFunc {
 // @Produce json
 // @Param id path int true "Appointment ID"
 // @Param body body domain.Appointment true "Body"
-// @Success 200 {object} domain.Appointment
+// @Success 200 {object} domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Failure 409 {object} web.errorResponse
 // @Router /appointments/{id} [put]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) Put() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")
@@ -239,12 +239,12 @@ func (h *appointmentHandler) Put() gin.HandlerFunc {
 // @Produce json
 // @Param id path int true "Appointment ID"
 // @Param body body domain.Appointment true "Body"
-// @Success 200 {object} domain.Appointment
+// @Success 200 {object} domain.AppointmentDTO
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments/{id} [patch]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Description string `json:"description,omitempty"`
@@ -301,7 +301,7 @@ func (h *appointmentHandler) Patch() gin.HandlerFunc {
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /appointments/{id} [delete]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *appointmentHandler) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")

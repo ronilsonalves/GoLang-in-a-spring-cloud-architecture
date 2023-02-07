@@ -105,7 +105,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: List all appointments
       tags:
       - Appointments
@@ -136,7 +136,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Create a new appointment
       tags:
       - Appointments
@@ -171,7 +171,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Delete an appointment by ID
       tags:
       - Appointments
@@ -205,7 +205,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Get an appointment by an ID
       tags:
       - Appointments
@@ -245,7 +245,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update fields from an appointment by ID
       tags:
       - Appointments
@@ -289,7 +289,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update a entire appointment by ID
       tags:
       - Appointments
@@ -326,7 +326,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Get all appointments by dentist license doc
       tags:
       - Appointments
@@ -363,7 +363,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Get all appointments by patient identity doc
       tags:
       - Appointments
@@ -390,7 +390,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: List all dentists
       tags:
       - Dentists
@@ -421,7 +421,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Create a new dentist
       tags:
       - Dentists
@@ -456,7 +456,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Delete a product by ID
       tags:
       - Dentists
@@ -490,7 +490,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Get a dentist by an ID
       tags:
       - Dentists
@@ -526,7 +526,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update fields from a dentist
       tags:
       - Dentists
@@ -566,7 +566,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update an entire dentist by ID
       tags:
       - Dentists
@@ -593,7 +593,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: List all patients
       tags:
       - Patients
@@ -624,7 +624,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Create a new patient
       tags:
       - Patients
@@ -664,7 +664,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update an entire patient by ID
       tags:
       - Patients
@@ -699,7 +699,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Delete a patient by ID
       tags:
       - Patients
@@ -733,7 +733,7 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Get a patient by an ID
       tags:
       - Patients
@@ -769,13 +769,16 @@ paths:
           schema:
             $ref: '#/definitions/web.errorResponse'
       security:
-      - SECRET_TOKEN: []
+      - OAuth2Application: []
       summary: Update fields from a patient
       tags:
       - Patients
 securityDefinitions:
-  SECRET_TOKEN:
-    in: header
-    name: SECRET_TOKEN
-    type: apiKey
+  OAuth2Application:
+    authorizationUrl: http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/auth
+    flow: accessCode
+    scopes:
+      openid: ""
+    tokenUrl: http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/token
+    type: oauth2
 swagger: "2.0"

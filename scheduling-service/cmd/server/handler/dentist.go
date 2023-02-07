@@ -33,7 +33,7 @@ func NewDentistHandler(s dentist.Service) *dentistHandler {
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Router /dentists [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		response, err := h.s.GetAll()
@@ -60,7 +60,7 @@ func (h *dentistHandler) GetAll() gin.HandlerFunc {
 // @Failure 401 {object} web.errorResponse
 // @Failure 404 {object} web.errorResponse
 // @Router /dentists/{id} [get]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) GetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")
@@ -93,7 +93,7 @@ func (h *dentistHandler) GetByID() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Router /dentists [post]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) Post() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var dentist domain.Dentist
@@ -134,7 +134,7 @@ func (h *dentistHandler) Post() gin.HandlerFunc {
 // @Failure 401 {object} web.errorResponse
 // @Failure 409 {object} web.errorResponse
 // @Router /dentists/{id} [put]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) Put() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")
@@ -179,7 +179,7 @@ func (h *dentistHandler) Put() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Router /dentists/{id} [patch]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) Patch() gin.HandlerFunc {
 	type Request struct {
 		Surname       string `json:"surname,omitempty"`
@@ -228,7 +228,7 @@ func (h *dentistHandler) Patch() gin.HandlerFunc {
 // @Failure 404 {object} web.errorResponse
 // @Failure 401 {object} web.errorResponse
 // @Router /dentists/{id} [delete]
-// @Security SECRET_TOKEN
+// @Security OAuth2Application
 func (h *dentistHandler) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		idParam := ctx.Param("id")

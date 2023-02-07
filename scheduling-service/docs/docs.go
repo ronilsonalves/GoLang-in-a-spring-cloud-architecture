@@ -28,7 +28,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all appointments from db.",
@@ -75,7 +75,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new appointment by request body",
@@ -126,7 +126,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Get all appointments by dentist license doc",
@@ -184,7 +184,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all appointments by patient identity doc",
@@ -242,7 +242,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get an appointment by a provided ID.",
@@ -295,7 +295,7 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update a entire appointment by ID and request body",
@@ -363,7 +363,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete an appointment by ID",
@@ -416,7 +416,7 @@ const docTemplate = `{
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from an appointment by ID and fields in request body",
@@ -480,7 +480,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all dentists from db.",
@@ -521,7 +521,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new dentist by request body.",
@@ -572,7 +572,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get a dentist by a provided ID.",
@@ -625,7 +625,7 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update an entire dentist by ID.",
@@ -687,7 +687,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete a product by ID",
@@ -740,7 +740,7 @@ const docTemplate = `{
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from a dentist",
@@ -798,7 +798,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all patients from db.",
@@ -839,7 +839,7 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update an entire patient by ID.",
@@ -901,7 +901,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new patient by request body.",
@@ -952,7 +952,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get a patient by a provided ID.",
@@ -1005,7 +1005,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete a patient by ID",
@@ -1058,7 +1058,7 @@ const docTemplate = `{
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from a patient",
@@ -1213,10 +1213,14 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "SECRET_TOKEN": {
-            "type": "apiKey",
-            "name": "SECRET_TOKEN",
-            "in": "header"
+        "OAuth2Application": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "authorizationUrl": "http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/auth",
+            "tokenUrl": "http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/token",
+            "scopes": {
+                "openid": ""
+            }
         }
     }
 }`

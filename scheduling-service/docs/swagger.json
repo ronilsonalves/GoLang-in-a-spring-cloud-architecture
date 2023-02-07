@@ -19,7 +19,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all appointments from db.",
@@ -66,7 +66,7 @@
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new appointment by request body",
@@ -117,7 +117,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Get all appointments by dentist license doc",
@@ -175,7 +175,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all appointments by patient identity doc",
@@ -233,7 +233,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get an appointment by a provided ID.",
@@ -286,7 +286,7 @@
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update a entire appointment by ID and request body",
@@ -354,7 +354,7 @@
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete an appointment by ID",
@@ -407,7 +407,7 @@
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from an appointment by ID and fields in request body",
@@ -471,7 +471,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all dentists from db.",
@@ -512,7 +512,7 @@
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new dentist by request body.",
@@ -563,7 +563,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get a dentist by a provided ID.",
@@ -616,7 +616,7 @@
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update an entire dentist by ID.",
@@ -678,7 +678,7 @@
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete a product by ID",
@@ -731,7 +731,7 @@
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from a dentist",
@@ -789,7 +789,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get all patients from db.",
@@ -830,7 +830,7 @@
             "put": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update an entire patient by ID.",
@@ -892,7 +892,7 @@
             "post": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Create a new patient by request body.",
@@ -943,7 +943,7 @@
             "get": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "get a patient by a provided ID.",
@@ -996,7 +996,7 @@
             "delete": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Delete a patient by ID",
@@ -1049,7 +1049,7 @@
             "patch": {
                 "security": [
                     {
-                        "SECRET_TOKEN": []
+                        "OAuth2Application": []
                     }
                 ],
                 "description": "Update fields from a patient",
@@ -1204,10 +1204,14 @@
         }
     },
     "securityDefinitions": {
-        "SECRET_TOKEN": {
-            "type": "apiKey",
-            "name": "SECRET_TOKEN",
-            "in": "header"
+        "OAuth2Application": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "authorizationUrl": "http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/auth",
+            "tokenUrl": "http://localhost:8090/realms/GoLangInSpringCloud/protocol/openid-connect/token",
+            "scopes": {
+                "openid": ""
+            }
         }
     }
 }
