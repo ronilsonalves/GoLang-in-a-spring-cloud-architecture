@@ -12,8 +12,6 @@ spring:
           uri: lb://scheduling-service
           predicates:
             - Path=/api/v1/**
-          filters:
-            - StripPrefix=2
       default-filters:
         - TokenRelay
         - LogFilter
