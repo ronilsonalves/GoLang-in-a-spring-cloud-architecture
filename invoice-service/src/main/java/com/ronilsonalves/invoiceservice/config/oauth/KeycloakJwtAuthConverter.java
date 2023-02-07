@@ -12,10 +12,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,16 +33,19 @@ public class KeycloakJwtAuthConverter implements Converter<Jwt, AbstractAuthenti
     private static List<GrantedAuthority> extractRoles(String route, JsonNode jwt) {
         Set<String> rolesWithPrefix = new HashSet<>();
 
+        if (Objects.equals(route, "realm_access")) {
+            jwt.path(route)
+                    .path("roles").elements()
+                    .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText()));
+        }
+
         jwt.path(route)
                 .elements()
                 .forEachRemaining(e -> e.path("roles")
                         .elements()
                         .forEachRemaining(r -> rolesWithPrefix.add("ROLE_" + r.asText())));
 
-        final List<GrantedAuthority> authorityList =
-                AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
-
-        return authorityList;
+        return AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
     }
     private static List<GrantedAuthority> extractAud(String route, JsonNode jwt) {
         Set<String> rolesWithPrefix = new HashSet<>();
@@ -54,10 +54,7 @@ public class KeycloakJwtAuthConverter implements Converter<Jwt, AbstractAuthenti
                 .elements()
                 .forEachRemaining(e ->rolesWithPrefix.add("AUD_" + e.asText()));
 
-        final List<GrantedAuthority> authorityList =
-                AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
-
-        return authorityList;
+        return AuthorityUtils.createAuthorityList(rolesWithPrefix.toArray(new String[0]));
     }
 
 
