@@ -119,8 +119,6 @@ func auxGetAllByTable(tableName string, s *sqlStore) (interface{}, error) {
 			return entities, err
 		}
 
-		//var appointment domain.Appointment
-		//var appointments []domain.Appointment
 		var appointment domain.AppointmentDTO
 		var appointments []domain.AppointmentDTO
 
@@ -130,9 +128,7 @@ func auxGetAllByTable(tableName string, s *sqlStore) (interface{}, error) {
 				&appointment.Description,
 				&appointment.DateAndTime,
 				&appointment.DentistCRO,
-				&appointment.PatientRG, //; err != nil {
-				//&appointment.Dentist.CRO,
-				//&appointment.Patient.RG,
+				&appointment.PatientRG,
 				&appointment.Dentist.Id,
 				&appointment.Dentist.LastName,
 				&appointment.Dentist.Name,
@@ -299,18 +295,7 @@ func auxSave(tableName string, s *sqlStore, entity interface{}) (interface{}, er
 				appointment.Description,
 				apDateAndTimeParsed,
 				appointment.DentistCRO,
-				appointment.PatientRG) //err != nil {
-			//&appointment.Dentist.CRO,
-			//&appointment.Patient.RG,
-			//&appointment.Dentist.Id,
-			//&appointment.Dentist.LastName,
-			//&appointment.Dentist.Name,
-			//&appointment.Dentist.CRO,
-			//&appointment.Patient.Id,
-			//&appointment.Patient.LastName,
-			//&appointment.Patient.Name,
-			//&appointment.Patient.RG,
-			//&appointment.Patient.CreatedAt)
+				appointment.PatientRG)
 			if err != nil {
 				fmt.Println("inserting data failed :", err.Error())
 				return nil, err
@@ -323,7 +308,6 @@ func auxSave(tableName string, s *sqlStore, entity interface{}) (interface{}, er
 			appointment.Id = int(lastInsertedID)
 			log.Println("... INSERT operation was successfully")
 			return s.GetByID(appointment.Id, AP)
-			//return response, nil
 		}
 	case DE:
 		var dentist domain.Dentist

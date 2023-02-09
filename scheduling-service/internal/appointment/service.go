@@ -122,18 +122,3 @@ func (s *service) Update(id int, a domain.Appointment) (domain.AppointmentDTO, e
 func (s *service) Delete(id int) error {
 	return s.r.Delete(id)
 }
-
-// sendMsg - send a msg to RabbitMQ queue when an appointment is made or updated
-//func sendMsg(a domain.AppointmentDTO) {
-//	mq, err := amqp.ConnectRabbitMQ(os.Getenv("RABBIT_MQ_URL_CONN"), "appointment-service")
-//	log.Println(err)
-//	body, _ := json.Marshal(a)
-//	err = mq.Publish(&rabbitmq.MQConfigPublish{
-//		RoutingKey: mq.Queue().Name,
-//		Message: amqpi.Publishing{
-//			ContentType: "application/json",
-//			Body:        body,
-//		},
-//	})
-//	defer mq.Close()
-//}

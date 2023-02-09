@@ -14,14 +14,6 @@ public class RabbitTemplateConfig {
     public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
         CustomLocalDateTimeObjectMapper customLocalDateTimeObjectMapper =
                 new CustomLocalDateTimeObjectMapper(new ObjectMapper());
-//        ObjectMapper om = new ObjectMapper();
-//        JavaTimeModule module = new JavaTimeModule();
-//        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-//        om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//        LocalDateTimeDeserializer localDateTimeDeserializer =
-//                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-//        module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer);
-//        om.registerModule(module);
         return new Jackson2JsonMessageConverter(customLocalDateTimeObjectMapper.getCustomLocalDateTimeObjectMapper());
     }
 
