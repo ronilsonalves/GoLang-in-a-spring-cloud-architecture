@@ -24,27 +24,20 @@ public class OAuth2ResourceServerSecurityConfiguration {
                                         .requestMatchers(
                                                 "/swagger-ui.html",
                                                 "/swagger-ui/**",
+                                                "/swagger/**",
                                                 "/webjars/**",
                                                 "/v3/api-docs/**",
-                                                "/actuator/**").permitAll();
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                )
-                .authorizeHttpRequests(authorize -> {
-                            try {
-                                authorize
+                                                "/actuator/**").permitAll()
                                         .and()
                                         .sessionManagement()
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                         .and()
                                         .oauth2ResourceServer(oauth2 -> oauth2
                                                 .jwt(jwtConfigurer -> jwtConfigurer
-                                                        .jwtAuthenticationConverter(new KeycloakJwtAuthConverter())));
-                                authorize.anyRequest().hasRole("ADMIN");
-                                //TODO check why @PreAuthorize("hasRole('MY_ROLE')") is not working on our controllers.
-                                authorize
+                                                        .jwtAuthenticationConverter(new KeycloakJwtAuthConverter())))
+                                        .authorizeHttpRequests()
+                                        .anyRequest().hasRole("ADMIN")
+                                        //TODO check why @PreAuthorize("hasRole('MY_ROLE')") is not working on our controllers.
                                         .and()
                                         .exceptionHandling()
                                         .authenticationEntryPoint(authenticationEntryPoint())

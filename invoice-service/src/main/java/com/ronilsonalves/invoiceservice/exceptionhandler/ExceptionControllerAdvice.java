@@ -43,4 +43,14 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseBody
+    @ExceptionHandler(InternalServerException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<MessageExceptionHandler> internalServerException(InternalServerException internalServerException) {
+        MessageExceptionHandler error = new MessageExceptionHandler(
+                LocalDateTime.now(),HttpStatus.INTERNAL_SERVER_ERROR.value(), internalServerException.getMessage()
+        );
+        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
