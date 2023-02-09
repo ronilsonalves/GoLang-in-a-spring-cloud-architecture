@@ -3,6 +3,7 @@ package com.ronilsonalves.invoiceservice.api.controller;
 import com.ronilsonalves.invoiceservice.api.service.InvoiceService;
 import com.ronilsonalves.invoiceservice.data.dto.InvoiceRequestBody;
 import com.ronilsonalves.invoiceservice.data.model.Invoice;
+import com.ronilsonalves.invoiceservice.exceptionhandler.InternalServerException;
 import com.ronilsonalves.invoiceservice.exceptionhandler.InvalidUUIDException;
 import com.ronilsonalves.invoiceservice.exceptionhandler.ResourceNotFoundException;
 import com.ronilsonalves.invoiceservice.exceptionhandler.UnauthorizedException;
@@ -60,7 +61,8 @@ public class InvoiceController {
     })
     @SecurityRequirement(name = "oauth_sec")
     @PostMapping
-    public ResponseEntity<Invoice> save(@RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException, UnauthorizedException {
+    public ResponseEntity<Invoice> save(@RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException,
+            InternalServerException, UnauthorizedException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(invoiceRequestBody));
     }
 
@@ -78,7 +80,8 @@ public class InvoiceController {
     @SecurityRequirement(name = "oauth_sec")
     @PutMapping("/{invoiceID}")
     public ResponseEntity<Invoice> update(@PathVariable String invoiceID,
-                                          @RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException, UnauthorizedException {
+                                          @RequestBody InvoiceRequestBody invoiceRequestBody) throws InvalidUUIDException,
+            InternalServerException, UnauthorizedException{
         return ResponseEntity.status(HttpStatus.OK).body(service.update(invoiceRequestBody, UUID.fromString(invoiceID)));
     }
 
